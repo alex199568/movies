@@ -29,6 +29,37 @@ android {
   }
 }
 
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+  group = "Reporting"
+
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+
+  def excludes = ['**/R.class',
+                  '**/R$*.class',
+                  '**/*$ViewInjector*.*',
+                  '**/BuildConfig.*',
+                  '**/Manifest*.*',
+                  '**/*Test*.*',
+                  'android/**/*.*',
+                  '**/*Fragment*',
+                  '**/*Activity*',
+                  '**/*Scope*',
+                  '**/*Component*',
+                  '**/*Module*',
+                  '**/*DataClass*',
+                  '**/*Application*']
+  classDirectories = fileTree(dir: "$buildDir/intermediates/classes/debug",
+      excludes: excludes) + fileTree(dir: "$buildDir/tmp/kotlin-classes/debug",
+      excludes: excludes)
+
+  sourceDirectories = files([android.sourceSets.main.java.srcDirs,
+                             "src/main/kotlin"])
+  executionData = files("$buildDir/jacoco/testDebugUnitTest.exec")
+}
+
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
