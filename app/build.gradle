@@ -13,6 +13,14 @@ jacoco {
 
 android {
   compileSdkVersion 27
+  signingConfigs {
+    release {
+      storeFile file("./release.jks")
+      storePassword System.getenv("STORE_PASSWORD")
+      keyAlias System.getenv("KEY_ALIAS")
+      keyPassword System.getenv("KEY_PASSWORD")
+    }
+  }
   defaultConfig {
     applicationId "com.test.technical.movies"
     minSdkVersion 15
@@ -25,6 +33,7 @@ android {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
     }
   }
 }
