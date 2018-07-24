@@ -2,6 +2,7 @@ package com.test.technical.movies
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -43,11 +44,24 @@ class MainActivity : AppCompatActivity() {
         .build()
 
     val theMovieDBApi = retrofit.create(TheMovieDBApi::class.java)
+
     theMovieDBApi.details(557)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe {
           someText.text = it.toString()
+        }
+
+    theMovieDBApi.search("spider")
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+          Log.d("zxcv", "page ${it.page}")
+          Log.d("zxcv", "total pages ${it.totalPages}")
+          Log.d("zxcv", "total results ${it.totalResults}")
+          it.results.forEach {
+            Log.d("zxcv", it.toString())
+          }
         }
   }
 }
