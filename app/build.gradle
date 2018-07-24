@@ -4,7 +4,12 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'jacoco-android'
+apply plugin: 'jacoco'
+
+jacoco {
+  toolVersion = "0.8.0"
+  reportsDir = file("$buildDir/reports")
+}
 
 android {
   compileSdkVersion 27
