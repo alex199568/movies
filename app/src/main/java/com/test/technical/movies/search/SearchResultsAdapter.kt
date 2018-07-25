@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.test.technical.movies.R
+import com.test.technical.movies.details.MovieDetailsActivity
 import com.test.technical.movies.search.SearchResultsAdapter.SearchResultViewHolder
 
 import com.test.technical.movies.model.SearchResult
@@ -29,6 +30,9 @@ class SearchResultsAdapter(
   inner class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(result: SearchResult) {
       itemView.findViewById<TextView>(R.id.title).text = result.title
+      itemView.setOnClickListener {
+        context.startActivity(MovieDetailsActivity.newIntent(context, result.id))
+      }
     }
   }
 }
