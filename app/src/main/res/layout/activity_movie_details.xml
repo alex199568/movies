@@ -6,14 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-  <TextView
-      android:id="@+id/responseView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
+
+  <ImageView
+      android:id="@+id/poster"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:scaleType="centerCrop"
+      android:src="@drawable/ic_launcher_background"
+      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <TextView
+      android:id="@+id/overview"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#8000"
+      android:padding="16dp"
+      android:textColor="#eee"
+      android:textSize="20sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:text="Overview"
+      />
+  <ProgressBar
+      android:id="@+id/progressBar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      style="?android:attr/progressBarStyle"
       />
 </android.support.constraint.ConstraintLayout>
