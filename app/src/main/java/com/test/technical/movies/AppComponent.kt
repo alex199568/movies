@@ -9,8 +9,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
-  fun theMovieDBApi(): TheMovieDBApi
-
   fun inject(activity: MovieDetailsActivity)
   fun inject(fragment: SearchFragment)
   fun inject(fragment: FavouritesFragment)

@@ -1,7 +1,10 @@
 package com.test.technical.movies
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.test.technical.movies.data.FavouritesDao
+import com.test.technical.movies.data.MoviesDatabase
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -79,4 +82,17 @@ class AppModule(private val context: Context) {
   @Singleton
   @Provides
   fun provideCache(): Cache = Cache(File(context.cacheDir, CACHE_DIR_NAME), MAX_CACHE_SIZE)
+
+  @Singleton
+  @Provides
+  fun provideDatabase(): MoviesDatabase = Room.databaseBuilder(
+              context.applicationContext,
+              MoviesDatabase::class.java,
+              "movies.db"
+          ).build()
+
+  @Singleton
+  @Provides
+  fun provideFavouritesDao(database: MoviesDatabase): FavouritesDao =
+      database.favouritesDao()
 }

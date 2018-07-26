@@ -20,6 +20,12 @@ class SearchResultsAdapter(
     private val context: Context,
     private val results: MutableList<SearchResult> = mutableListOf()
 ) : RecyclerView.Adapter<SearchResultViewHolder>() {
+  private var itemLongClickCallback: (item: SearchResult) -> Unit = { }
+
+  fun onItemLongClick(callback: (item: SearchResult) -> Unit) {
+    itemLongClickCallback = callback
+  }
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
     val itemView = LayoutInflater.from(context).inflate(R.layout.search_result, parent, false)
     return SearchResultViewHolder(itemView)
@@ -49,6 +55,8 @@ class SearchResultsAdapter(
       itemView.setOnClickListener {
         context.startActivity(MovieDetailsActivity.newIntent(context, result.id))
       }
+
+      itemView.setOnLongClickListener { itemLongClickCallback(result); true }
 
       title.text = result.title
       Picasso
