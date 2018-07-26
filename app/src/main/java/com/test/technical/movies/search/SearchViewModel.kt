@@ -12,12 +12,14 @@ import javax.inject.Inject
 class SearchViewModel(private val theMovieDBApi: TheMovieDBApi) : ViewModel() {
   val searchResponse = MutableLiveData<SearchResponse>()
 
-  fun search(query: String) {
+  fun search(query: String, page: Int) {
     theMovieDBApi
-        .search(query)
+        .search(query, page)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe { searchResponse.postValue(it) }
+        .subscribe {
+          searchResponse.postValue(it)
+        }
   }
 
   class Factory @Inject constructor(private val theMovieDBApi: TheMovieDBApi) : ViewModelProvider.Factory {

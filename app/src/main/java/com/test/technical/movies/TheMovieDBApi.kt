@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface TheMovieDBApi {
   @GET("search/movie")
-  fun search(@Query("query") query: String): Observable<SearchResponse>
+  fun search(@Query("query") query: String, @Query("page") page: Int): Observable<SearchResponse>
 
   @GET("movie/{movieId}")
   fun details(@Path("movieId") movieId: Int): Observable<MovieDetails>
