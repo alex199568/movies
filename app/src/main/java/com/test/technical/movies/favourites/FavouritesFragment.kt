@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.test.technical.movies.MoviesApp
 import com.test.technical.movies.R
 import kotlinx.android.synthetic.main.fragment_favourites.favouritesRecyclerView
+import kotlinx.android.synthetic.main.fragment_favourites.noFavouritesMessage
 import javax.inject.Inject
 
 class FavouritesFragment : Fragment() {
@@ -42,7 +43,16 @@ class FavouritesFragment : Fragment() {
     favouritesRecyclerView.layoutManager = LinearLayoutManager(context!!)
     favouritesRecyclerView.adapter = adapter
 
-    viewModel.all().observe(this, Observer { it?.let { adapter.favourites = it } })
+    viewModel.all().observe(this, Observer {
+      if (it == null || it.isEmpty()) {
+        noFavouritesMessage.visibility = View.VISIBLE
+        favouritesRecyclerView.visibility = View.GONE
+      } else {
+        noFavouritesMessage.visibility = View.GONE
+        favouritesRecyclerView.visibility = View.VISIBLE
+        adapter.favourites = it
+      }
+    })
   }
 
   companion object {
