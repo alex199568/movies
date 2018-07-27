@@ -52,7 +52,7 @@ class FavouritesAdapter(
       }
 
       itemView.setOnClickListener {
-        context.startActivity(MovieDetailsActivity.newIntent(context, favourite.movieDbId))
+        context.startActivity(MovieDetailsActivity.newIntent(context, favourite.movieDbId, true))
       }
 
       title.text = favourite.title

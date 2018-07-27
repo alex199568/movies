@@ -68,11 +68,13 @@ class SearchResultsAdapter(
     private val favouritesIndicatorRemoved = itemView.findViewById<ImageView>(R.id.favouriteIndicatorRemoved)
 
     fun bind(result: SearchResult) {
+      val isFavourite = favouritesSet.contains(result.id)
+
       itemView.setOnClickListener {
-        context.startActivity(MovieDetailsActivity.newIntent(context, result.id))
+        context.startActivity(MovieDetailsActivity.newIntent(context, result.id, isFavourite))
       }
 
-      if (favouritesSet.contains(result.id)) {
+      if (isFavourite) {
         favouritesIndicatorAdded.visibility = View.VISIBLE
         favouritesIndicatorRemoved.visibility = View.GONE
       } else {

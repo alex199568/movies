@@ -3,6 +3,7 @@ package com.test.technical.movies.data
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.test.technical.movies.model.MovieDetails
 import com.test.technical.movies.model.SearchResult
 
 @Entity(tableName = "favourites")
@@ -17,5 +18,12 @@ data class Favourite(
       searchResult.id,
       searchResult.title,
       searchResult.backdropPath
+  )
+
+  constructor(movieDetails: MovieDetails) : this(
+      null,
+      movieDetails.id,
+      movieDetails.originalTitle,
+      movieDetails.backdropPath
   )
 }
