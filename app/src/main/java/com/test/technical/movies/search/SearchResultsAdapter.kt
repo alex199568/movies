@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.test.technical.movies.R
+import com.test.technical.movies.data.Favourite
 import com.test.technical.movies.details.MovieDetailsActivity
 import com.test.technical.movies.search.SearchResultsAdapter.SearchResultViewHolder
 
@@ -22,6 +23,12 @@ class SearchResultsAdapter(
 ) : RecyclerView.Adapter<SearchResultViewHolder>() {
   private var addToFavouritesCallback: (item: SearchResult) -> Unit = { }
   private var removeFromFavouritesCallback: (item: SearchResult) -> Unit = { }
+
+  var favourites: List<Favourite> = listOf()
+  set(value) {
+    field = value
+    notifyDataSetChanged()
+  }
 
   fun onAddToFavourites(callback: (item: SearchResult) -> Unit) {
     addToFavouritesCallback = callback
@@ -61,6 +68,14 @@ class SearchResultsAdapter(
     fun bind(result: SearchResult) {
       itemView.setOnClickListener {
         context.startActivity(MovieDetailsActivity.newIntent(context, result.id))
+      }
+
+      if (favourites.find { it.movieDbId == result.id } == null) {
+        favouritesIndicatorRemoved.visibility = View.VISIBLE
+        favouritesIndicatorAdded.visibility = View.GONE
+      } else {
+        favouritesIndicatorAdded.visibility = View.VISIBLE
+        favouritesIndicatorRemoved.visibility = View.GONE
       }
 
       favouritesIndicatorAdded.setOnClickListener {

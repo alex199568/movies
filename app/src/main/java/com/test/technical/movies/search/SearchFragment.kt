@@ -77,6 +77,8 @@ class SearchFragment : Fragment() {
         progressBar.visibility = View.GONE
       }
     })
+
+    viewModel.favourites().observe(this, Observer { it?.let { adapter.favourites = it } })
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {

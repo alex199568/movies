@@ -1,5 +1,6 @@
 package com.test.technical.movies.search
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
@@ -28,6 +29,8 @@ class SearchViewModel(
           searchResponse.postValue(it)
         }
   }
+
+  fun favourites(): LiveData<List<Favourite>> = favouritesDao.getAll()
 
   fun addToFavourites(result: SearchResult) {
     Observable.fromCallable {
