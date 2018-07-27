@@ -10,12 +10,12 @@ data class Favourite(
     @PrimaryKey(autoGenerate = true) val id: Long?,
     @ColumnInfo(name = "themoviedb_id") val movieDbId: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "poster_path") val posterPath: String
+    @ColumnInfo(name = "image_path") val imagePath: String
 ) {
   constructor(searchResult: SearchResult) : this(
       null,
       searchResult.id,
       searchResult.title,
-      searchResult.posterPath
+      searchResult.backdropPath
   )
 }

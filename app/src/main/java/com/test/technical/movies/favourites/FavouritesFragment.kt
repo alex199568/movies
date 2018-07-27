@@ -4,22 +4,23 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.test.technical.movies.MoviesApp
 import com.test.technical.movies.R
-import com.test.technical.movies.data.FavouritesDao
+import kotlinx.android.synthetic.main.fragment_favourites.favouritesRecyclerView
 import javax.inject.Inject
 
 class FavouritesFragment : Fragment() {
   @Inject
   lateinit var viewModelFactory: FavouritesViewModel.Factory
-  @Inject
-  lateinit var favouritesDao: FavouritesDao
 
   private lateinit var viewModel: FavouritesViewModel
+
+  private lateinit var adapter: FavouritesAdapter
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
       inflater.inflate(R.layout.fragment_favourites, container, false)
@@ -35,10 +36,11 @@ class FavouritesFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    favouritesDao.getAll().observe(this, Observer {
-      Log.d("zxcv", "Data changed")
-      it?.forEach { Log.d("zxcv", it.toString()) }
-    })
+    adapter = FavouritesAdapter(context!!)
+    favouritesRecyclerView.layoutManager = LinearLayoutManager(context!!)
+    favouritesRecyclerView.adapter = adapter
+
+    viewModel.all().observe(this, Observer { it?.let { Log.d("zxcv", it.toString()); adapter.favourites = it } })
   }
 
   companion object {

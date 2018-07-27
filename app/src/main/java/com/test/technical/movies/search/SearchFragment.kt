@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
+import android.widget.Toast
 import com.test.technical.movies.MoviesApp
 import com.test.technical.movies.R
 import com.test.technical.movies.data.Favourite
@@ -60,6 +61,7 @@ class SearchFragment : Fragment() {
 
     adapter = SearchResultsAdapter(context!!)
     adapter.onItemLongClick {
+      Toast.makeText(context!!, "Adding item", Toast.LENGTH_SHORT).show()
       Observable
           .fromCallable { favouritesDao.insert(Favourite(it)) }
           .subscribeOn(Schedulers.io())
