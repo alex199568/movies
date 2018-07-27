@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.test.technical.movies.R
 import com.test.technical.movies.data.Favourite
+import com.test.technical.movies.details.MovieDetailsActivity
 import com.test.technical.movies.favourites.FavouritesAdapter.FavouritesViewHolder
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -48,6 +49,10 @@ class FavouritesAdapter(
     fun bind(favourite: Favourite) {
       favouritesIndicatorAdded.setOnClickListener {
         removeFromFavouritesCallback(favourite)
+      }
+
+      itemView.setOnClickListener {
+        context.startActivity(MovieDetailsActivity.newIntent(context, favourite.movieDbId))
       }
 
       title.text = favourite.title
