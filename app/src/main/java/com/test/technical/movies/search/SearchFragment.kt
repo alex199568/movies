@@ -78,7 +78,7 @@ class SearchFragment : Fragment() {
       }
     })
 
-    viewModel.favourites().observe(this, Observer { it?.let { adapter.favourites = it } })
+    viewModel.favourites().observe(this, Observer { it?.let { adapter.updateFavourites(it) } })
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {

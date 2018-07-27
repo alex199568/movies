@@ -24,9 +24,11 @@ class SearchResultsAdapter(
   private var addToFavouritesCallback: (item: SearchResult) -> Unit = { }
   private var removeFromFavouritesCallback: (item: SearchResult) -> Unit = { }
 
-  var favourites: List<Favourite> = listOf()
-  set(value) {
-    field = value
+  private var favouritesSet = mutableSetOf<Int>()
+
+  fun updateFavourites(favourites: List<Favourite>) {
+    favouritesSet.clear()
+    favourites.forEach { favouritesSet.add(it.movieDbId) }
     notifyDataSetChanged()
   }
 
@@ -70,12 +72,12 @@ class SearchResultsAdapter(
         context.startActivity(MovieDetailsActivity.newIntent(context, result.id))
       }
 
-      if (favourites.find { it.movieDbId == result.id } == null) {
-        favouritesIndicatorRemoved.visibility = View.VISIBLE
-        favouritesIndicatorAdded.visibility = View.GONE
-      } else {
+      if (favouritesSet.contains(result.id)) {
         favouritesIndicatorAdded.visibility = View.VISIBLE
         favouritesIndicatorRemoved.visibility = View.GONE
+      } else {
+        favouritesIndicatorRemoved.visibility = View.VISIBLE
+        favouritesIndicatorAdded.visibility = View.GONE
       }
 
       favouritesIndicatorAdded.setOnClickListener {
