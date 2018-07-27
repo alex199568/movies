@@ -17,11 +17,17 @@ private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 class FavouritesAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<FavouritesViewHolder>() {
+  private var removeFromFavouritesCallback: (item: Favourite) -> Unit = { }
+
   var favourites: List<Favourite> = listOf()
     set(value) {
       field = value
       notifyDataSetChanged()
     }
+
+  fun onRemoveFromFavourites(callback: (item: Favourite) -> Unit) {
+    removeFromFavouritesCallback = callback
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouritesViewHolder {
     val itemView = LayoutInflater.from(context).inflate(R.layout.favourite, parent, false)
@@ -37,8 +43,13 @@ class FavouritesAdapter(
   inner class FavouritesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val image = itemView.findViewById<ImageView>(R.id.image)
     private val title = itemView.findViewById<TextView>(R.id.title)
+    private val favouritesIndicatorAdded = itemView.findViewById<ImageView>(R.id.favouriteIndicatorAdded)
 
     fun bind(favourite: Favourite) {
+      favouritesIndicatorAdded.setOnClickListener {
+        removeFromFavouritesCallback(favourite)
+      }
+
       title.text = favourite.title
       Picasso
           .get()

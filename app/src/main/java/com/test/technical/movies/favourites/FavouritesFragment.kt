@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,11 +35,14 @@ class FavouritesFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    adapter = FavouritesAdapter(context!!)
+    adapter = FavouritesAdapter(context!!).apply {
+      onRemoveFromFavourites { viewModel.remove(it) }
+    }
+
     favouritesRecyclerView.layoutManager = LinearLayoutManager(context!!)
     favouritesRecyclerView.adapter = adapter
 
-    viewModel.all().observe(this, Observer { it?.let { Log.d("zxcv", it.toString()); adapter.favourites = it } })
+    viewModel.all().observe(this, Observer { it?.let { adapter.favourites = it } })
   }
 
   companion object {
