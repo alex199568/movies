@@ -31,6 +31,7 @@ android {
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     resValue "string", "themoviedb_apiKey", System.getenv("THEMOVIEDB_APIKEY")
+    vectorDrawables.useSupportLibrary = true
   }
   buildTypes {
     release {

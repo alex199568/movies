@@ -20,10 +20,15 @@ class SearchResultsAdapter(
     private val context: Context,
     private val results: MutableList<SearchResult> = mutableListOf()
 ) : RecyclerView.Adapter<SearchResultViewHolder>() {
-  private var itemLongClickCallback: (item: SearchResult) -> Unit = { }
+  private var addToFavouritesCallback: (item: SearchResult) -> Unit = { }
+  private var removeFromFavouritesCallback: (item: SearchResult) -> Unit = { }
 
-  fun onItemLongClick(callback: (item: SearchResult) -> Unit) {
-    itemLongClickCallback = callback
+  fun onAddToFavourites(callback: (item: SearchResult) -> Unit) {
+    addToFavouritesCallback = callback
+  }
+
+  fun onRemoveFromFavourites(callback: (item: SearchResult) -> Unit) {
+    removeFromFavouritesCallback = callback
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
@@ -50,13 +55,25 @@ class SearchResultsAdapter(
   inner class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val poster = itemView.findViewById<ImageView>(R.id.poster)
     private val title = itemView.findViewById<TextView>(R.id.title)
+    private val favouritesIndicatorAdded = itemView.findViewById<ImageView>(R.id.favouriteIndicatorAdded)
+    private val favouritesIndicatorRemoved = itemView.findViewById<ImageView>(R.id.favouriteIndicatorRemoved)
 
     fun bind(result: SearchResult) {
       itemView.setOnClickListener {
         context.startActivity(MovieDetailsActivity.newIntent(context, result.id))
       }
 
-      itemView.setOnLongClickListener { itemLongClickCallback(result); true }
+      favouritesIndicatorAdded.setOnClickListener {
+        favouritesIndicatorAdded.visibility = View.GONE
+        favouritesIndicatorRemoved.visibility = View.VISIBLE
+        removeFromFavouritesCallback(result)
+      }
+
+      favouritesIndicatorRemoved.setOnClickListener {
+        favouritesIndicatorRemoved.visibility = View.GONE
+        favouritesIndicatorAdded.visibility = View.VISIBLE
+        addToFavouritesCallback(result)
+      }
 
       title.text = result.title
       Picasso

@@ -10,13 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
-import android.widget.Toast
 import com.test.technical.movies.MoviesApp
 import com.test.technical.movies.R
-import com.test.technical.movies.data.Favourite
-import com.test.technical.movies.data.FavouritesDao
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_search.progressBar
 import kotlinx.android.synthetic.main.fragment_search.searchResultsRecyclerView
 import kotlinx.android.synthetic.main.fragment_search.searchView
@@ -25,8 +20,6 @@ import javax.inject.Inject
 class SearchFragment : Fragment() {
   @Inject
   lateinit var viewModelFactory: SearchViewModel.Factory
-  @Inject
-  lateinit var favouritesDao: FavouritesDao
 
   private lateinit var viewModel: SearchViewModel
 
@@ -59,13 +52,9 @@ class SearchFragment : Fragment() {
       }
     })
 
-    adapter = SearchResultsAdapter(context!!)
-    adapter.onItemLongClick {
-      Toast.makeText(context!!, "Adding item", Toast.LENGTH_SHORT).show()
-      Observable
-          .fromCallable { favouritesDao.insert(Favourite(it)) }
-          .subscribeOn(Schedulers.io())
-          .subscribe()
+    adapter = SearchResultsAdapter(context!!).apply {
+      onAddToFavourites { viewModel.addToFavourites(it) }
+      onRemoveFromFavourites { viewModel.removeFromFavourites(it) }
     }
 
     searchResultsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
