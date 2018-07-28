@@ -24,10 +24,7 @@ class SearchViewModel(
     theMovieDBApi
         .search(query, page)
         .subscribeOn(schedulers.io)
-        .observeOn(schedulers.main)
-        .subscribe {
-          searchResponse.postValue(it)
-        }
+        .subscribe { searchResponse.postValue(it) }
   }
 
   fun favourites(): LiveData<List<Favourite>> = favouritesDao.getAll()
