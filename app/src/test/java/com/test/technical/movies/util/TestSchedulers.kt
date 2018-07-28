@@ -2,9 +2,8 @@ package com.test.technical.movies.util
 
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class TestSchedulers : SchedulersWrapper {
-  override val io: Scheduler get() = Schedulers.io()
-  override val main: Scheduler get() = AndroidSchedulers.mainThread()
+  override val io: Scheduler get() = Schedulers.trampoline()
+  override val main: Scheduler get() = Schedulers.trampoline()
 }
