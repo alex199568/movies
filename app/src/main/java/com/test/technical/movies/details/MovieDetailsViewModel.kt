@@ -39,7 +39,6 @@ class MovieDetailsViewModel(
     theMovieDBApi
         .details(movieId)
         .subscribeOn(schedulers.io)
-        .observeOn(AndroidSchedulers.mainThread())
         .subscribe { movieDetails.postValue(it) }
   }
 
