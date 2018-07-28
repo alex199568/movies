@@ -9,22 +9,22 @@ import com.test.technical.movies.data.Favourite
 import com.test.technical.movies.data.FavouritesDao
 import com.test.technical.movies.model.SearchResponse
 import com.test.technical.movies.model.SearchResult
+import com.test.technical.movies.util.SchedulersWrapper
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SearchViewModel(
     private val theMovieDBApi: TheMovieDBApi,
-    private val favouritesDao: FavouritesDao
+    private val favouritesDao: FavouritesDao,
+    private val schedulers: SchedulersWrapper
 ) : ViewModel() {
   val searchResponse = MutableLiveData<SearchResponse>()
 
   fun search(query: String, page: Int) {
     theMovieDBApi
         .search(query, page)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(schedulers.io)
+        .observeOn(schedulers.main)
         .subscribe {
           searchResponse.postValue(it)
         }
@@ -36,7 +36,7 @@ class SearchViewModel(
     Observable.fromCallable {
       favouritesDao.insert(Favourite(result))
     }
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(schedulers.io)
         .subscribe()
   }
 
@@ -44,16 +44,17 @@ class SearchViewModel(
     Observable.fromCallable {
       favouritesDao.deleteByMovieDBId(result.id)
     }
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(schedulers.io)
         .subscribe()
   }
 
   class Factory @Inject constructor(
       private val theMovieDBApi: TheMovieDBApi,
-      private val favouritesDao: FavouritesDao
+      private val favouritesDao: FavouritesDao,
+      private val schedulers: SchedulersWrapper
   ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        SearchViewModel(theMovieDBApi, favouritesDao) as T
+        SearchViewModel(theMovieDBApi, favouritesDao, schedulers) as T
   }
 }

@@ -5,6 +5,8 @@ import android.content.Context
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.test.technical.movies.data.FavouritesDao
 import com.test.technical.movies.data.MoviesDatabase
+import com.test.technical.movies.util.AppSchedulers
+import com.test.technical.movies.util.SchedulersWrapper
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -95,4 +97,8 @@ class AppModule(private val context: Context) {
   @Provides
   fun provideFavouritesDao(database: MoviesDatabase): FavouritesDao =
       database.favouritesDao()
+
+  @Singleton
+  @Provides
+  fun provideSchedulers(): SchedulersWrapper = AppSchedulers()
 }
