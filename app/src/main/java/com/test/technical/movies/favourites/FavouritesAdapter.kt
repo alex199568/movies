@@ -13,8 +13,6 @@ import com.test.technical.movies.data.Favourite
 import com.test.technical.movies.details.MovieDetailsActivity
 import com.test.technical.movies.favourites.FavouritesAdapter.FavouritesViewHolder
 
-private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
-
 class FavouritesAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<FavouritesViewHolder>() {
@@ -58,8 +56,8 @@ class FavouritesAdapter(
       title.text = favourite.title
       Picasso
           .get()
-          .load("$IMAGE_BASE_URL${favourite.imagePath}")
-          .placeholder(R.drawable.ic_launcher_background) // TODO: find a proper placeholder
+          .load("${context.getString(R.string.images_base_url)}${favourite.imagePath}")
+          .placeholder(R.drawable.clapboard)
           .into(image)
     }
   }

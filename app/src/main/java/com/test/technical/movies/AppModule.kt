@@ -20,7 +20,6 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-private const val BASE_URL = "https://api.themoviedb.org/3/"
 private const val API_KEY_PARAM_NAME = "api_key"
 private const val CONNECT_TIMEOUT = 60L
 private const val READ_TIMEOUT = 300L
@@ -44,7 +43,7 @@ class AppModule(private val context: Context) {
           .addCallAdapterFactory(callAdapterFactory)
           .addConverterFactory(converterFactory)
           .client(client)
-          .baseUrl(BASE_URL)
+          .baseUrl(context.getString(R.string.themoviedb_base_url))
           .build()
 
   @Singleton

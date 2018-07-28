@@ -2,4 +2,8 @@
   <string name="app_name">Movies</string>
   <string name="noFavouritesMessage">You didn\'t favourite any movies yet.\nTry searching for movies</string>
   <string name="actionFavourite">Favourite</string>
+  <string name="posterContentDescription">poster</string>
+  <string name="toogleFavouriteContentDescription">Toogle Favourite</string>
+  <string name="addedToFavouritesContentDescription">Added to favourites</string>
+  <string name="removedFromFavouritesContentDescription">Removed from favourites</string>
 </resources>

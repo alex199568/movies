@@ -22,8 +22,6 @@ import javax.inject.Inject
 private const val MOVIE_ID_EXTRA = "MovieId"
 private const val IS_FAVOURITE_EXTRA = "IsFavourite"
 
-private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500" // TODO: put it somewhere
-
 class MovieDetailsActivity : AppCompatActivity() {
   @Inject
   lateinit var viewModelFactory: MovieDetailsViewModel.Factory
@@ -56,8 +54,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         supportActionBar?.title = it.originalTitle
         Picasso
             .get()
-            .load("$IMAGE_BASE_URL${it.posterPath}")
-            .placeholder(R.drawable.ic_launcher_background) // TODO: proper placeholder
+            .load("${getString(R.string.images_base_url)}${it.posterPath}")
+            .placeholder(R.drawable.poster_placeholder)
             .into(poster)
         overview.text = it.overview
       }

@@ -31,6 +31,8 @@ android {
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     resValue "string", "themoviedb_apiKey", System.getenv("THEMOVIEDB_APIKEY")
+    resValue "string", "themoviedb_base_url", "https://api.themoviedb.org/3/"
+    resValue "string", "images_base_url", "https://image.tmdb.org/t/p/w500/"
     vectorDrawables.useSupportLibrary = true
   }
   buildTypes {

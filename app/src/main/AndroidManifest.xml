@@ -5,7 +5,7 @@
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application
-      android:allowBackup="true"
+      android:allowBackup="false"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
@@ -20,9 +20,18 @@
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
-    <activity android:name=".details.MovieDetailsActivity"/>
-  </application>
+
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+            android:host="https"
+            android:scheme="themoviedb.org" />
+</intent-filter>
+
+
+</activity>
+<activity android:name=".details.MovieDetailsActivity"/>
+</application>
 
 </manifest>

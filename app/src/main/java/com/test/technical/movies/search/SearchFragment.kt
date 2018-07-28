@@ -47,7 +47,6 @@ class SearchFragment : Fragment() {
       }
 
       override fun onQueryTextChange(newText: String?): Boolean {
-        // TODO: show recent searches?
         return false
       }
     })

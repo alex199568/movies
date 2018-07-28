@@ -15,8 +15,6 @@ import com.test.technical.movies.search.SearchResultsAdapter.SearchResultViewHol
 
 import com.test.technical.movies.model.SearchResult
 
-private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
-
 class SearchResultsAdapter(
     private val context: Context,
     private val results: MutableList<SearchResult> = mutableListOf()
@@ -97,8 +95,8 @@ class SearchResultsAdapter(
       title.text = result.title
       Picasso
           .get()
-          .load("$IMAGE_BASE_URL${result.backdropPath}")
-          .placeholder(R.drawable.ic_launcher_background) // TODO: find a proper placeholder
+          .load("${context.getString(R.string.images_base_url)}${result.backdropPath}")
+          .placeholder(R.drawable.clapboard)
           .into(poster)
     }
   }
