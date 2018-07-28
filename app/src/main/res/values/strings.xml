@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">Movies</string>
+  <string name="noFavouritesMessage">You didn\'t favourite any movies yet.\nTry searching for movies</string>
+  <string name="actionFavourite">Favourite</string>
 </resources>
