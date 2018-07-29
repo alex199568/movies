@@ -28,7 +28,7 @@ class SearchFragment : Fragment() {
 
   private lateinit var viewModel: SearchViewModel
 
-  private lateinit var adapter: SearchResultsAdapter
+  private lateinit var searchResultsAdapter: SearchResultsAdapter
 
   private var latestPage = 0
   private var totalPages = 1
@@ -36,13 +36,34 @@ class SearchFragment : Fragment() {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
       inflater.inflate(R.layout.fragment_search, container, false)
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    activity?.let { (it.application as MoviesApp).appComponent.inject(this) }
+
+    viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    initSearchView()
+
+    initAdapter()
+
+    initViewModelOnError()
+
+    initRecyclerView()
+
+    observeSearchResponse()
+    observeFavourites()
+  }
+
+  private fun initSearchView() {
     searchView.setOnQueryTextListener(object : OnQueryTextListener {
       override fun onQueryTextSubmit(query: String?): Boolean {
         query?.let {
-          adapter.clear()
+          searchResultsAdapter.clear()
           latestPage = 1
           totalPages = 1
           viewModel.search(it, latestPage)
@@ -55,12 +76,16 @@ class SearchFragment : Fragment() {
         return false
       }
     })
+  }
 
-    adapter = SearchResultsAdapter(context!!).apply {
+  private fun initAdapter() {
+    searchResultsAdapter = SearchResultsAdapter(context!!).apply {
       addToFavouritesCallback = { viewModel.addToFavourites(it) }
       removeFromFavouritesCallback = { viewModel.removeFromFavourites(it) }
     }
+  }
 
+  private fun initViewModelOnError() {
     viewModel.onErrorCallback = {
       context?.let {
         Toast.makeText(it, it.getString(R.string.offlineMessage), Toast.LENGTH_SHORT).show()
@@ -72,39 +97,37 @@ class SearchFragment : Fragment() {
         }
       }
     }
+  }
 
-    searchResultsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-      override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-        super.onScrollStateChanged(recyclerView, newState)
-        if (!searchResultsRecyclerView.canScrollVertically(1) && latestPage != totalPages) {
-          viewModel.search(searchView.query.toString(), ++latestPage)
-          progressBar.visibility = View.VISIBLE
+  private fun initRecyclerView() {
+    searchResultsRecyclerView.apply {
+      searchResultsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+          super.onScrollStateChanged(recyclerView, newState)
+          if (!searchResultsRecyclerView.canScrollVertically(1) && latestPage != totalPages) {
+            viewModel.search(searchView.query.toString(), ++latestPage)
+            progressBar.visibility = View.VISIBLE
+          }
         }
-      }
-    })
-    searchResultsRecyclerView.layoutManager = LinearLayoutManager(context!!)
-    searchResultsRecyclerView.adapter = adapter
+      })
+      layoutManager = LinearLayoutManager(context!!)
+      adapter = searchResultsAdapter
+    }
+  }
 
-
+  private fun observeSearchResponse() {
     viewModel.searchResponse.observe(this, Observer {
       if (it != null) {
         totalPages = it.totalPages
-        adapter.add(it.results)
+        searchResultsAdapter.add(it.results)
         progressBar.visibility = View.GONE
       }
     })
-
-    viewModel.favourites().observe(this, Observer { it?.let { adapter.updateFavourites(it) } })
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    activity?.let { (it.application as MoviesApp).appComponent.inject(this) }
-
-    viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
+  private fun observeFavourites() {
+    viewModel.favourites().observe(this, Observer { it?.let { searchResultsAdapter.updateFavourites(it) } })
   }
-
   companion object {
     @JvmStatic
     fun newInstance(): SearchFragment =
