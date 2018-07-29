@@ -15,8 +15,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
@@ -92,6 +95,20 @@ class SearchViewModelTest {
     viewModel.addToFavourites(result)
 
     verify(favouritesDao).insert(Favourite(null, 3, "title", "back1"))
+  }
+
+  @Test
+  fun testOnError() {
+    val errorCallback: () -> Unit = { }
+    val callbackSpy = spy(errorCallback)
+
+    viewModel.onError(callbackSpy)
+
+    `when`(theMovieDBApi.search(anyString(), anyInt())).thenReturn(Observable.error(Exception()))
+
+    viewModel.search("query", 2)
+
+    verify(callbackSpy).invoke()
   }
 
   private fun createSearchResult(id: Int, title: String) =

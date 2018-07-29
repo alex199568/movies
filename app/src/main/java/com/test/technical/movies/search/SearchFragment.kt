@@ -10,12 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
+import android.widget.Toast
 import com.test.technical.movies.MoviesApp
 import com.test.technical.movies.R
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_search.progressBar
 import kotlinx.android.synthetic.main.fragment_search.searchResultsRecyclerView
 import kotlinx.android.synthetic.main.fragment_search.searchView
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
+private const val REQUEST_REPEAT_DELAY = 5L
 
 class SearchFragment : Fragment() {
   @Inject
@@ -54,6 +59,18 @@ class SearchFragment : Fragment() {
     adapter = SearchResultsAdapter(context!!).apply {
       onAddToFavourites { viewModel.addToFavourites(it) }
       onRemoveFromFavourites { viewModel.removeFromFavourites(it) }
+    }
+
+    viewModel.onError {
+      context?.let {
+        Toast.makeText(it, it.getString(R.string.offlineMessage), Toast.LENGTH_SHORT).show()
+      }
+      Observable.timer(REQUEST_REPEAT_DELAY, TimeUnit.SECONDS).subscribe {
+        val query = searchView.query
+        if (query.isNotEmpty()) {
+          viewModel.search(query.toString(), latestPage)
+        }
+      }
     }
 
     searchResultsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

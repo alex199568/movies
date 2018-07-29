@@ -20,11 +20,18 @@ class SearchViewModel(
 ) : ViewModel() {
   val searchResponse = MutableLiveData<SearchResponse>()
 
+  private var onErrorCallback: () -> Unit = { }
+
+  fun onError(callback: () -> Unit) {
+    onErrorCallback = callback
+  }
+
   fun search(query: String, page: Int) {
     theMovieDBApi
         .search(query, page)
         .subscribeOn(schedulers.io)
-        .subscribe { searchResponse.postValue(it) }
+        .observeOn(schedulers.main)
+        .subscribe({ searchResponse.postValue(it) }, { onErrorCallback() })
   }
 
   fun favourites(): LiveData<List<Favourite>> = favouritesDao.getAll()
