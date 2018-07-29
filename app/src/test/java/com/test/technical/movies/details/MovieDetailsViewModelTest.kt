@@ -13,8 +13,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.Date
@@ -68,6 +70,20 @@ class MovieDetailsViewModelTest {
     viewModel.movieDetails.observeForever { assertEquals(details, it) }
 
     viewModel.requestMovieDetails(3)
+  }
+
+  @Test
+  fun testOnError() {
+    val errorCallback: () -> Unit = { }
+    val callbackSpy = spy(errorCallback)
+
+    viewModel.onError(callbackSpy)
+
+    `when`(theMovieDBApi.details(anyInt())).thenReturn(Observable.error(Exception()))
+
+    viewModel.requestMovieDetails(3)
+
+    verify(callbackSpy).invoke()
   }
 
   private fun createMovieDetails(id: Int): MovieDetails = MovieDetails(

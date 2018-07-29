@@ -9,7 +9,6 @@ import com.test.technical.movies.data.FavouritesDao
 import com.test.technical.movies.model.MovieDetails
 import com.test.technical.movies.util.SchedulersWrapper
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class MovieDetailsViewModel(
@@ -18,6 +17,12 @@ class MovieDetailsViewModel(
     private val schedulers: SchedulersWrapper
 ) : ViewModel() {
   val movieDetails = MutableLiveData<MovieDetails>()
+
+  private var onErrorCallback: () -> Unit = { }
+
+  fun onError(callback: () -> Unit) {
+    onErrorCallback = callback
+  }
 
   fun addToFavourites(details: MovieDetails) {
     Observable.fromCallable {
@@ -39,7 +44,11 @@ class MovieDetailsViewModel(
     theMovieDBApi
         .details(movieId)
         .subscribeOn(schedulers.io)
-        .subscribe { movieDetails.postValue(it) }
+        .observeOn(schedulers.main)
+        .subscribe(
+            { movieDetails.postValue(it) },
+            { onErrorCallback() }
+        )
   }
 
   class Factory @Inject constructor(

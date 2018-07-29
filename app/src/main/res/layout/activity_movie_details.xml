@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/coordinator"
     >
-
-  <ImageView
-      android:id="@+id/poster"
+  <android.support.constraint.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:scaleType="centerCrop"
-      app:srcCompat="@drawable/ic_launcher_background"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:contentDescription="@string/posterContentDescription"
-      />
+      android:layout_height="match_parent"
+      >
 
-  <TextView
-      android:id="@+id/overview"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@color/transparent_black"
-      android:padding="@dimen/margin_large"
-      android:textColor="@color/gallery"
-      android:textSize="@dimen/text_size_large"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      tools:text="Overview"
-      />
-  <ProgressBar
-      android:id="@+id/progressBar"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      style="?android:attr/progressBarStyle"
-      />
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/poster"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/posterContentDescription"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background"
+        />
+
+    <TextView
+        android:id="@+id/overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent_black"
+        android:padding="@dimen/margin_large"
+        android:textColor="@color/gallery"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Overview"
+        />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/progressBarStyle"
+        />
+  </android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

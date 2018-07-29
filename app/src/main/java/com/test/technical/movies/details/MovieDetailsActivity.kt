@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -14,13 +15,18 @@ import com.squareup.picasso.Picasso
 import com.test.technical.movies.MoviesApp
 import com.test.technical.movies.R
 import com.test.technical.movies.model.MovieDetails
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_movie_details.coordinator
 import kotlinx.android.synthetic.main.activity_movie_details.overview
 import kotlinx.android.synthetic.main.activity_movie_details.poster
 import kotlinx.android.synthetic.main.activity_movie_details.progressBar
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val MOVIE_ID_EXTRA = "MovieId"
 private const val IS_FAVOURITE_EXTRA = "IsFavourite"
+
+private const val REQUEST_RETRY_INTERVAL = 5L
 
 class MovieDetailsActivity : AppCompatActivity() {
   @Inject
@@ -61,11 +67,20 @@ class MovieDetailsActivity : AppCompatActivity() {
       }
     })
 
+    viewModel.onError {
+      Snackbar.make(coordinator, getString(R.string.offlineMessage), Snackbar.LENGTH_SHORT).show()
+      Observable.timer(REQUEST_RETRY_INTERVAL, TimeUnit.SECONDS).subscribe { requestMovieDetails() }
+    }
+
     if (viewModel.movieDetails.value == null) {
-      viewModel.requestMovieDetails(intent.getIntExtra(MOVIE_ID_EXTRA, 0))
+      requestMovieDetails()
     }
 
     isFavourite = intent.getBooleanExtra(IS_FAVOURITE_EXTRA, false)
+  }
+
+  private fun requestMovieDetails() {
+    viewModel.requestMovieDetails(intent.getIntExtra(MOVIE_ID_EXTRA, 0))
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
