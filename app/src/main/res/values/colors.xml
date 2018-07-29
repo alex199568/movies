@@ -3,4 +3,9 @@
   <color name="colorPrimary">#3F51B5</color>
   <color name="colorPrimaryDark">#303F9F</color>
   <color name="colorAccent">#FF4081</color>
+
+  <color name="gallery">#EEEEEE</color>
+  <color name="transparent_black">#88000000</color>
+  <color name="golden_dream">#F0EA33</color>
+  <color name="silver_chalice">#AAAAAA</color>
 </resources>
