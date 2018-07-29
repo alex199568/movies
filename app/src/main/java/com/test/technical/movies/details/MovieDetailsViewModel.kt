@@ -18,11 +18,7 @@ class MovieDetailsViewModel(
 ) : ViewModel() {
   val movieDetails = MutableLiveData<MovieDetails>()
 
-  private var onErrorCallback: () -> Unit = { }
-
-  fun onError(callback: () -> Unit) {
-    onErrorCallback = callback
-  }
+  var onErrorCallback: () -> Unit = { }
 
   fun addToFavourites(details: MovieDetails) {
     Observable.fromCallable {

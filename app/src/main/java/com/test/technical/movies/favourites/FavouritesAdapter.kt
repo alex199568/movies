@@ -16,17 +16,13 @@ import com.test.technical.movies.favourites.FavouritesAdapter.FavouritesViewHold
 class FavouritesAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<FavouritesViewHolder>() {
-  private var removeFromFavouritesCallback: (item: Favourite) -> Unit = { }
+  var removeFromFavouritesCallback: (item: Favourite) -> Unit = { }
 
   var favourites: List<Favourite> = listOf()
     set(value) {
       field = value
       notifyDataSetChanged()
     }
-
-  fun onRemoveFromFavourites(callback: (item: Favourite) -> Unit) {
-    removeFromFavouritesCallback = callback
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouritesViewHolder {
     val itemView = LayoutInflater.from(context).inflate(R.layout.favourite, parent, false)

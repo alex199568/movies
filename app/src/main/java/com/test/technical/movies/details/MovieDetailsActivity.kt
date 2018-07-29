@@ -67,7 +67,7 @@ class MovieDetailsActivity : AppCompatActivity() {
       }
     })
 
-    viewModel.onError {
+    viewModel.onErrorCallback = {
       Snackbar.make(coordinator, getString(R.string.offlineMessage), Snackbar.LENGTH_SHORT).show()
       Observable.timer(REQUEST_RETRY_INTERVAL, TimeUnit.SECONDS).subscribe { requestMovieDetails() }
     }

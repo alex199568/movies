@@ -19,8 +19,8 @@ class SearchResultsAdapter(
     private val context: Context,
     private val results: MutableList<SearchResult> = mutableListOf()
 ) : RecyclerView.Adapter<SearchResultViewHolder>() {
-  private var addToFavouritesCallback: (item: SearchResult) -> Unit = { }
-  private var removeFromFavouritesCallback: (item: SearchResult) -> Unit = { }
+  var addToFavouritesCallback: (item: SearchResult) -> Unit = { }
+  var removeFromFavouritesCallback: (item: SearchResult) -> Unit = { }
 
   private var favouritesSet = mutableSetOf<Int>()
 
@@ -28,14 +28,6 @@ class SearchResultsAdapter(
     favouritesSet.clear()
     favourites.forEach { favouritesSet.add(it.movieDbId) }
     notifyDataSetChanged()
-  }
-
-  fun onAddToFavourites(callback: (item: SearchResult) -> Unit) {
-    addToFavouritesCallback = callback
-  }
-
-  fun onRemoveFromFavourites(callback: (item: SearchResult) -> Unit) {
-    removeFromFavouritesCallback = callback
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {

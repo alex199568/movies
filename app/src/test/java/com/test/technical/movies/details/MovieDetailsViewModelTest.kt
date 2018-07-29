@@ -77,7 +77,7 @@ class MovieDetailsViewModelTest {
     val errorCallback: () -> Unit = { }
     val callbackSpy = spy(errorCallback)
 
-    viewModel.onError(callbackSpy)
+    viewModel.onErrorCallback = callbackSpy
 
     `when`(theMovieDBApi.details(anyInt())).thenReturn(Observable.error(Exception()))
 

@@ -37,7 +37,7 @@ class FavouritesFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
 
     adapter = FavouritesAdapter(context!!).apply {
-      onRemoveFromFavourites { viewModel.remove(it) }
+      removeFromFavouritesCallback = { viewModel.remove(it) }
     }
 
     favouritesRecyclerView.layoutManager = LinearLayoutManager(context!!)

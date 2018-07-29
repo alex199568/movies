@@ -102,7 +102,7 @@ class SearchViewModelTest {
     val errorCallback: () -> Unit = { }
     val callbackSpy = spy(errorCallback)
 
-    viewModel.onError(callbackSpy)
+    viewModel.onErrorCallback = callbackSpy
 
     `when`(theMovieDBApi.search(anyString(), anyInt())).thenReturn(Observable.error(Exception()))
 

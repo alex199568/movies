@@ -57,11 +57,11 @@ class SearchFragment : Fragment() {
     })
 
     adapter = SearchResultsAdapter(context!!).apply {
-      onAddToFavourites { viewModel.addToFavourites(it) }
-      onRemoveFromFavourites { viewModel.removeFromFavourites(it) }
+      addToFavouritesCallback = { viewModel.addToFavourites(it) }
+      removeFromFavouritesCallback = { viewModel.removeFromFavourites(it) }
     }
 
-    viewModel.onError {
+    viewModel.onErrorCallback = {
       context?.let {
         Toast.makeText(it, it.getString(R.string.offlineMessage), Toast.LENGTH_SHORT).show()
       }

@@ -20,11 +20,7 @@ class SearchViewModel(
 ) : ViewModel() {
   val searchResponse = MutableLiveData<SearchResponse>()
 
-  private var onErrorCallback: () -> Unit = { }
-
-  fun onError(callback: () -> Unit) {
-    onErrorCallback = callback
-  }
+  var onErrorCallback: () -> Unit = { }
 
   fun search(query: String, page: Int) {
     theMovieDBApi

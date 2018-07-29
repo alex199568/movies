@@ -2,36 +2,41 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test.technical.movies">
 
-  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET"/>
 
   <application
+      android:name=".MoviesApp"
       android:allowBackup="false"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
-      android:name=".MoviesApp"
       android:theme="@style/AppTheme">
     <activity
         android:name=".main.MainActivity"
+        android:screenOrientation="portrait"
         android:windowSoftInputMode="adjustPan"
         >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
-
         <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
 
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
         <data
             android:host="https"
-            android:scheme="themoviedb.org" />
-</intent-filter>
+            android:scheme="themoviedb.org"/>
+      </intent-filter>
+    </activity>
 
+    <activity
+        android:name=".details.MovieDetailsActivity"
+        android:screenOrientation="portrait"
+        />
 
-</activity>
-<activity android:name=".details.MovieDetailsActivity"/>
-</application>
+  </application>
 
 </manifest>
